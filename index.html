@@ -35,19 +35,21 @@
     const height = window.innerHeight;
 
     // Fetch transaction data from JSON file
-    fetch('block_19258329_address_pairs.json')
+    fetch('http://127.0.0.1:8000/block/19357067')
       .then(response => response.json())
       .then(data => processData(data))
       .catch(error => console.error('Error fetching transaction data:', error));
     
     function processData(data) {
+      let jsonString = JSON.parse(data.links);
+      console.log(jsonString);
       // Define color scale for node groups
       const color = d3.scaleOrdinal(d3.schemeCategory10);
 
       // Define nodes and links based on transaction data
       const nodes = [];
       const links = [];
-      data.forEach((transaction, index) => {
+      jsonString.forEach((transaction, index) => {
         const from = Object.keys(transaction)[0];
         const to = transaction[from];
         nodes.push({ id: from, group: index });
