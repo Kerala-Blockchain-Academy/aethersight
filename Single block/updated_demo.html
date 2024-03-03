@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forced Graph</title>
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0; 
+      padding: 0;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .node-text {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      fill: #333;
+      visibility: hidden;
+    }
+  </style>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <svg id="graph"></svg>
+
+  <script>
+    // Define the width and height of the SVG canvas
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // Fetch transaction data from JSON file
+    fetch('block_19258329_address_pairs.json')
+      .then(response => response.json())
+      .then(data => processData(data))
+      .catch(error => console.error('Error fetching transaction data:', error));
+    
+    function processData(data) {
+      // Define color scale for node groups
+      const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+      // Define nodes and links based on transaction data
+      const nodes = [];
+      const links = [];
+      data.forEach((transaction, index) => {
+        const from = Object.keys(transaction)[0];
+        const to = transaction[from];
+        nodes.push({ id: from, group: index });
+        nodes.push({ id: to, group: index });
+        links.push({ source: from, target: to });
+      });
+
+      console.log(nodes);
+      console.log(links);
+
+      // Create a force simulation
+      const simulation = d3.forceSimulation(nodes)
+        .force("link", d3.forceLink(links).id(d => d.id))
+        .force("charge", d3.forceManyBody())
+        .force("x", d3.forceX(width / 2).strength(0.1))
+        .force("y", d3.forceY(height / 2).strength(0.1));
+
+      // Select the SVG element and set its attributes
+      const svg = d3.select("#graph")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("viewBox", [0, 0, width, height])
+        .attr("style", "max-width: 100%; height: auto;")
+        .append("g");
+
+      // Create links between nodes
+      const link = svg.append("g")
+        .selectAll("line")
+        .data(links)
+        .enter().append("line")
+        .attr("stroke", "#999")
+        .attr("stroke-opacity", 0.6)
+        .attr("stroke-width", 1);
+
+      // Create nodes
+      const node = svg.append("g")
+        .selectAll("circle")
+        .data(nodes)
+        .enter().append("circle")
+        .attr("r", 7)
+        .attr("fill", d => color(d.group))
+        .attr("stroke", "#fff")
+        .attr("stroke-width", 1.5)
+        .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended))
+        .on("click", handleClick);
+
+      // Node text to display addresses
+      const nodeText = svg.selectAll(".node-text")
+        .data(nodes)
+        .enter().append("text")
+        .attr("class", "node-text")
+        .attr("x", d => d.x)
+        .attr("y", d => d.y - 10)
+        .attr("text-anchor", "middle")
+        .text(d => d.id)
+        .style("font-family", "Arial, sans-serif")
+        .style("font-size", "12px")
+        .style("fill", "#333")
+        .style("visibility", "hidden");
+
+      // Update node and link positions during simulation
+      simulation.on("tick", () => {
+        link.attr("x1", d => d.source.x)
+          .attr("y1", d => d.source.y)
+          .attr("x2", d => d.target.x)
+          .attr("y2", d => d.target.y);
+
+        node.attr("cx", d => d.x)
+          .attr("cy", d => d.y);
+
+        nodeText.attr("x", d => d.x)
+          .attr("y", d => d.y - 10);
+      });
+
+      // Enable zoom behavior
+      const zoom = d3.zoom()
+        .scaleExtent([0.1, 10]) // Set zoom scale limits
+        .on("zoom", zoomed);
+
+      svg.call(zoom);
+
+      // Handle zooming
+      function zoomed(event) {
+        svg.attr("transform", event.transform);
+      }
+
+      // Handle node dragging
+      function dragstarted(event) {
+        if (!event.active) simulation.alphaTarget(0.3).restart();
+        event.subject.fx = event.subject.x;
+        event.subject.fy = event.subject.y;
+      }
+
+      function dragged(event) {
+        event.subject.fx = event.x;
+        event.subject.fy = event.y;
+      }
+
+      function dragended(event) {
+        if (!event.active) simulation.alphaTarget(0);
+        event.subject.fx = null;
+        event.subject.fy = null;
+      }
+
+      // Handle node click event to display node address as alert
+      function handleClick(event, d) {
+        alert("Address: " + d.id);
+      }
+    }
+  </script>
+</body>
+</html>
