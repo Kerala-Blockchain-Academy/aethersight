@@ -1,8 +1,13 @@
 const width = window.innerWidth; // Width of the window
 const height = window.innerHeight - 60; // Adjusted height to accommodate header
 
-let blockNumber = 19357067; // Extract block number from file name by using regular expression \d+ which searches for sequences of one or more digits in the jsonFileName. The [0] index retrieves the first match from the array.
-// Update the current block number element
+let blockNumber = localStorage.getItem("currentBlockNumber");
+console.log("onload", blockNumber)
+if (!blockNumber) { // If not found in sessionStorage
+  blockNumber = 19357067; // Use the default block number
+  localStorage.setItem("currentBlockNumber", blockNumber); // Store in localStorage
+}
+
 document.getElementById('current-block').textContent = `Block Number: ${blockNumber}`; // Display current block number
 
 // Fetch transaction data from API file
@@ -77,7 +82,7 @@ function processData(data) {
         .selectAll("circle")
         .data(nodes) // binds the data (nodes array) to the selected elements. It associates each node in the nodes array with a <circle> element.
         .enter().append("circle") // creates a new <circle> element for each node in the nodes array.
-        .attr("r", 5) // sets the radius of the circles(nodes) to 5 pixels
+        .attr("r", 6) // sets the radius of the circles(nodes) to 5 pixels
         .attr("fill", d => color(d.group)) // sets the fill color of the nodes based on their group ('from' or 'to'). The color function is used to determine the color based on the group assigned to each node.
         .attr("stroke-width", 1.5) // sets the width of the circle strokes to 1.5 pixels
         .call(d3.drag() // d3.drag() function sets up the drag behaviour
@@ -161,6 +166,7 @@ function processData(data) {
 // Add event listeners for left and right arrow keys
 document.getElementById('prev-block').addEventListener('click', () => { // it retrieves the HTML element with the ID 'prev-block'. It selects the button element that the user interacts with.
     blockNumber -= 1;
+    localStorage.setItem("currentBlockNumber", blockNumber);
     document.getElementById('current-block').textContent = `Block Number: ${blockNumber}`;
     d3.select('#graph').selectAll('*').remove();
     fetch(`http://127.0.0.1:8000/block/${blockNumber}`)
@@ -171,6 +177,7 @@ document.getElementById('prev-block').addEventListener('click', () => { // it re
 
 document.getElementById('next-block').addEventListener('click', () => {
     blockNumber += 1;
+    localStorage.setItem("currentBlockNumber", blockNumber);
     document.getElementById('current-block').textContent = `Block Number: ${blockNumber}`;
     d3.select('#graph').selectAll('*').remove();
     fetch(`http://127.0.0.1:8000/block/${blockNumber}`)
@@ -181,7 +188,7 @@ document.getElementById('next-block').addEventListener('click', () => {
 
 document.getElementById('search-btn').addEventListener('click', () => {
     blockNumber = document.getElementById('block-search').value;
-
+    localStorage.setItem("currentBlockNumber", blockNumber);
     document.getElementById('current-block').textContent = `Block Number: ${blockNumber}`;
     d3.select('#graph').selectAll('*').remove();
     fetch(`http://127.0.0.1:8000/block/${blockNumber}`)
