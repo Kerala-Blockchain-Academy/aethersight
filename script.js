@@ -4,7 +4,7 @@ const height = window.innerHeight - 60; // Adjusted height to accommodate header
 let blockNumber = localStorage.getItem("currentBlockNumber");
 console.log("onload", blockNumber)
 if (!blockNumber) { // If not found in sessionStorage
-  blockNumber = 19357067; // Use the default block number
+  blockNumber = 19357071; // Use the default block number
   localStorage.setItem("currentBlockNumber", blockNumber); // Store in localStorage
 }
 
