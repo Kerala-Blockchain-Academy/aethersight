@@ -165,7 +165,7 @@ function processData(data) {
 
 // Add event listeners for left and right arrow keys
 document.getElementById('prev-block').addEventListener('click', () => { // it retrieves the HTML element with the ID 'prev-block'. It selects the button element that the user interacts with.
-    blockNumber -= 1;
+    blockNumber = parseInt(blockNumber) - 1;
     localStorage.setItem("currentBlockNumber", blockNumber);
     document.getElementById('current-block').textContent = `Block Number: ${blockNumber}`;
     d3.select('#graph').selectAll('*').remove();
@@ -176,7 +176,7 @@ document.getElementById('prev-block').addEventListener('click', () => { // it re
 });
 
 document.getElementById('next-block').addEventListener('click', () => {
-    blockNumber += 1;
+    blockNumber = parseInt(blockNumber) + 1;
     localStorage.setItem("currentBlockNumber", blockNumber);
     document.getElementById('current-block').textContent = `Block Number: ${blockNumber}`;
     d3.select('#graph').selectAll('*').remove();
