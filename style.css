@@ -1,0 +1,148 @@
+body,
+html {
+  height: 100%;
+  /* Set the height of body and html to 100% */
+  margin: 0;
+  /* Remove default margin */
+  padding: 0;
+  /* Remove default padding, ie, removing any space between the content and the element's border */
+  font-family: Arial, sans-serif;
+}
+
+header {
+  position: fixed;
+  /* Fixed position for the header */
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Occupy full width */
+  display: flex;
+  /* Use flexbox for layout */
+  justify-content: space-between;
+  /* Space between header elements */
+  align-items: center;
+  /* Center items vertically */
+  padding: 10px;
+  /* Padding for header */
+  background-color: #f0f0f0;
+  /* Background color for header */
+  z-index: 1000;
+  /* Set z-index to ensure header is on top */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Shadow effect for header */
+}
+
+#block-info span {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+#block-info span#current-block {
+  color: #007bff;
+}
+
+#graph-container {
+  position: absolute;
+  top: 60px;
+  /* Distance from top */
+  left: 0;
+  /* Occupy full width */
+  right: 0;
+  bottom: 0;
+  /* Occupy full height */
+  overflow: hidden;
+  /* Prevents scrollbars */
+}
+
+svg {
+  display: block;
+  /* Display SVG as block element */
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  /* Transition effect */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+#block-search {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+#search-btn {
+  margin-right: 30px;
+  margin-left: 10px;
+  background-color: #28a745;
+}
+
+#search-btn:hover {
+  background-color: #218838;
+}
+
+/* Legend styles */
+#legend {
+  position: fixed;
+  /* Fixed position for legend */
+  bottom: 20px;
+  /* Distance from bottom */
+  left: 20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.legend-circle {
+  margin-right: 10px;
+  /* Margin for circle */
+}
+
+.legend-item span {
+  white-space: nowrap;
+  /* Prevent wrapping */
+  margin-right: 10px;
+}
+
+.legend-circle-svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+/* tool tip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
