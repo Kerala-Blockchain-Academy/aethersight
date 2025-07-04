@@ -42,11 +42,6 @@ url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
 python main.py
 ```
 
-### Method 2: Using uvicorn directly
-```bash
-uvicorn main:app --reload
-```
-
 The application will be available at `http://127.0.0.1:8000`
 
 ## Usage
@@ -60,39 +55,6 @@ The application will be available at `http://127.0.0.1:8000`
    - Drag nodes to reposition them
    - Use mouse wheel to zoom in/out
    - Click and drag background to pan
-
-## API Endpoints
-
-### GET `/`
-Serves the main application interface (index.html)
-
-### GET `/block/{blockNumber}`
-Fetches Ethereum block data for the specified block number.
-
-**Parameters:**
-- `blockNumber` (int): The block number to fetch
-
-**Response:**
-```json
-{
-  "status": "success",
-  "links": "[{\"0xfrom_address\": \"0xto_address\"}, ...]"
-}
-```
-
-**Error Responses:**
-- `400` - API error from Ethereum network
-- `404` - Block not found (doesn't exist yet or invalid)
-- `500` - Network or server error
-
-**Example:**
-```
-GET http://127.0.0.1:8000/block/22845771
-```
-
-### Static File Routes
-- `GET /style.css` - Application styles
-- `GET /script.js` - Client-side JavaScript
 
 ## Project Structure
 
@@ -114,42 +76,7 @@ aethersight/
 - Cache files are named by block number (e.g., `22845771.json`)
 - Invalid or error responses are not cached
 
-## Error Handling
-
-The application includes comprehensive error handling:
-
-**Frontend:**
-- Loading indicators during data fetch
-- Visual error messages in the graph area
-- User-friendly alert dialogs
-- Graceful degradation on API failures
-
-**Backend:**
-- Detailed error logging
-- Specific HTTP status codes
-- API error detection and forwarding
-- Network timeout handling
-
-## Recent Improvements
-
-### Version 2.0 Features:
-- ✅ **Enhanced Error Handling** - Better user feedback for invalid blocks
-- ✅ **Loading Indicators** - Visual feedback during data fetching
-- ✅ **Code Cleanup** - Streamlined JavaScript with reusable functions
-- ✅ **Static File Serving** - Proper CSS/JS file delivery
-- ✅ **Improved API** - Better error detection and response codes
-- ✅ **Updated Default Block** - Starts with recent block (22845771)
-
-## Troubleshooting
-
-**Common Issues:**
-
-1. **500 Internal Server Error** - Usually indicates block doesn't exist yet
-2. **Network Errors** - Check internet connection and Alchemy API status
-3. **Loading Issues** - Ensure all files are in the correct directory
-4. **Performance** - Large blocks may take longer to render
-
-**Valid Block Range:**
+### Valid Block Range
 - Ethereum Genesis Block: 0
 - Current blocks: ~20M+ (as of 2024)
 - Future blocks will return 404 errors
