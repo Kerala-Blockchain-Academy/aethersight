@@ -1,4 +1,4 @@
-# Ethereum Network Visualizer (eth-net-vis)
+# Aethersight - Ethereum Network Visualizer
 
 A FastAPI-based application for fetching and visualizing Ethereum blockchain data. This project provides an interactive web interface to explore Ethereum block transaction networks using D3.js force-directed graphs.
 
@@ -8,10 +8,7 @@ A FastAPI-based application for fetching and visualizing Ethereum blockchain dat
 - **Real-time Block Data** - Fetch Ethereum block data via Alchemy API
 - **Smart Caching** - Local storage of block data for improved performance
 - **Block Navigation** - Browse blocks with previous/next buttons and search functionality
-- **Error Handling** - Comprehensive error management with user-friendly messages
-- **Responsive Design** - Full-screen visualization with zoom and pan capabilities
 - **Node Interactions** - Hover tooltips, click details, and drag functionality
-- **CORS-enabled** - Ready for frontend integration
 
 ## Prerequisites
 
@@ -24,16 +21,29 @@ A FastAPI-based application for fetching and visualizing Ethereum blockchain dat
 1. Clone or download this repository
 2. Navigate to the project directory
 3. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Configuration
 
-The application uses Alchemy's Ethereum API. You can update the API endpoint in `main.py`:
-```python
-url = "https://eth-mainnet.g.alchemy.com/v2/YOUR_API_KEY"
+1. **Set up environment variables:**
+   - Copy `.env.example` to `.env`
+   - Get your Alchemy API key from [https://dashboard.alchemy.com/](https://dashboard.alchemy.com/)
+   - Replace `your_alchemy_api_key_here` in the `.env` file with your actual API key
+
+```bash
+# Copy the example file
+cp .env.example .env
+
+# Edit .env file with your API key
+ALCHEMY_API_KEY=your_actual_api_key_here
+HOST=127.0.0.1
+PORT=8000
 ```
+
+2. **Optional:** Customize host and port in the `.env` file if needed
 
 ## Running the Project
 
@@ -51,10 +61,7 @@ The application will be available at `http://127.0.0.1:8000`
 3. **Search** - Enter any block number in the search field to jump to that block
 4. **Interaction** - 
    - Hover over nodes to see wallet addresses
-   - Click nodes for detailed address information
-   - Drag nodes to reposition them
    - Use mouse wheel to zoom in/out
-   - Click and drag background to pan
 
 ## Project Structure
 
